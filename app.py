@@ -1,13 +1,12 @@
 import os
-import gdown
 import pickle
 import pandas as pd
 import streamlit as st
-import numpy as np
 import requests
 import logging
 import warnings
-
+import zipfile
+import urllib.request
 st.set_page_config(
     page_title="Movie Recommender",
     page_icon="🎬",
@@ -19,15 +18,24 @@ logging.basicConfig(level=logging.ERROR)
 st.set_option('client.showErrorDetails', False)
 warnings.filterwarnings("ignore")
 
-# ✅ Download similarity.pkl using gdown if not exists
+
+
+# ✅ Download similarity.zip if not exists
 if not os.path.exists("similarity.pkl"):
-    url = "https://drive.google.com/file/d/1xSz6A7kceRO4gInkKVpx0E1rkDNpPtbd/view?usp=sharing"
-    gdown.download(url, "similarity.pkl", quiet=False)
+    zip_url = "https://drive.google.com/file/d/14qQt-2ctu1dhTOtjY7zCBWKkLLopP_Yv/view?usp=drivesdk"  # direct download link
+    urllib.request.urlretrieve(zip_url, "similarity.zip")
+
+    # ✅ Unzip it
+    with zipfile.ZipFile("similarity.zip", "r") as zip_ref:
+        zip_ref.extractall()  # extract to current directory
 
 # ✅ Load data
 movies_dict = pickle.load(open('movie_dict.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
 similarity = pickle.load(open('similarity.pkl', 'rb'))
+
+
+
 
 
 
