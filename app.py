@@ -5,16 +5,31 @@ import requests
 import pickle
 import logging
 import warnings
-
+import os
 # Setup logging and suppress warnings from Streamlit UI
 logging.basicConfig(level=logging.ERROR)
 st.set_option('client.showErrorDetails', False)
 warnings.filterwarnings("ignore")
 
-# Load movie data and similarity matrix
+
+
+# Download similarity.pkl from Google Drive if not already present
+def download_similarity_file():
+    url = "https://drive.google.com/file/d/1xSz6A7kceRO4gInkKVpx0E1rkDNpPtbd/view?usp=drivesdk"  # 🔁 Replace with your actual file ID
+    response = requests.get(url)
+    with open("similarity.pkl", "wb") as f:
+        f.write(response.content)
+    print("✅ similarity.pkl downloaded successfully.")
+
+# Download only if it doesn't exist
+if not os.path.exists("similarity.pkl"):
+    download_similarity_file()
+
+# Load the files
 movies_dict = pickle.load(open('movie_dict.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
 similarity = pickle.load(open('similarity.pkl', 'rb'))
+
 
 # Setup requests session
 session = requests.Session()
