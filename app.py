@@ -1,5 +1,6 @@
 import os
 import pickle
+import gdown
 import pandas as pd
 import streamlit as st
 import requests
@@ -21,13 +22,16 @@ warnings.filterwarnings("ignore")
 
 
 # ✅ Download similarity.zip if not exists
+# ✅ Download and unzip similarity.pkl from Google Drive using gdown
 if not os.path.exists("similarity.pkl"):
-    zip_url = "https://drive.google.com/file/d/14qQt-2ctu1dhTOtjY7zCBWKkLLopP_Yv/view?usp=drivesdk"  # direct download link
-    urllib.request.urlretrieve(zip_url, "similarity.zip")
+    # Google Drive file ID from your link
+    file_id = "14qQt-2ctu1dhTOtjY7zCBWKkLLopP_Yv"
+    zip_path = "similarity.zip"
+    gdown.download(f"https://drive.google.com/uc?id={file_id}", zip_path, quiet=False)
 
-    # ✅ Unzip it
-    with zipfile.ZipFile("similarity.zip", "r") as zip_ref:
+    with zipfile.ZipFile(zip_path, "r") as zip_ref:
         zip_ref.extractall()  # extract to current directory
+
 
 # ✅ Load data
 movies_dict = pickle.load(open('movie_dict.pkl', 'rb'))
