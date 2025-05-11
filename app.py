@@ -1,34 +1,34 @@
+import os
+import gdown
+import pickle
 import pandas as pd
 import streamlit as st
 import numpy as np
 import requests
-import pickle
 import logging
 import warnings
-import os
-# Setup logging and suppress warnings from Streamlit UI
+
+st.set_page_config(
+    page_title="Movie Recommender",
+    page_icon="🎬",
+    layout="wide"
+)
+
+# Setup logging and suppress warnings
 logging.basicConfig(level=logging.ERROR)
 st.set_option('client.showErrorDetails', False)
 warnings.filterwarnings("ignore")
 
-
-
-# Download similarity.pkl from Google Drive if not already present
-def download_similarity_file():
-    url = "https://drive.google.com/file/d/1xSz6A7kceRO4gInkKVpx0E1rkDNpPtbd/view?usp=drivesdk"  # 🔁 Replace with your actual file ID
-    response = requests.get(url)
-    with open("similarity.pkl", "wb") as f:
-        f.write(response.content)
-    print("✅ similarity.pkl downloaded successfully.")
-
-# Download only if it doesn't exist
+# ✅ Download similarity.pkl using gdown if not exists
 if not os.path.exists("similarity.pkl"):
-    download_similarity_file()
+    url = "https://drive.google.com/file/d/1xSz6A7kceRO4gInkKVpx0E1rkDNpPtbd/view?usp=sharing"
+    gdown.download(url, "similarity.pkl", quiet=False)
 
-# Load the files
+# ✅ Load data
 movies_dict = pickle.load(open('movie_dict.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
 similarity = pickle.load(open('similarity.pkl', 'rb'))
+
 
 
 # Setup requests session
@@ -114,8 +114,7 @@ def recommend(query):
 
     return recommended_movies, recommended_movies_posters, recommended_movies_descriptions
 
-# Streamlit UI setup
-st.set_page_config(layout="wide")
+
 
 # Background image and styling
 st.markdown(
