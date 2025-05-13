@@ -16,7 +16,7 @@ A web app that uses **Content-Based Filtering** to recommend movies based on the
 - 🧠 **Content-Based Filtering** for personalized movie suggestions
 - 📝 Uses **Bag of Words** and **Cosine Similarity** for text analysis
 - 🎥 Discover new movies based on content similarity
-- 🌗 Switch between **Dark Mode** and **Light Mode**
+
 
 ---
 
@@ -76,7 +76,8 @@ To run this project locally:
 ![Input Movie](./screenshots/input.png)
 
 ### 🔠 Movie Recommendations
-![Movie Recommendations](./screenshots/recommendations.png)(./screenshots/recommendations2.png)
+![Movie Recommendations](./screenshots/recommendations.png)
+![](./screenshots/recommendations2.png)
 
 ---
 
